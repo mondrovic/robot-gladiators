@@ -34,7 +34,8 @@ var fight = function(enemyName){
     
             if (confirmSkip){
                 window.alert(playerName + " has decided to skip this fight. Goodbye!");
-                playerMoney = playerMoney -10;
+                // subtracts money for being a coward
+                playerMoney -= 10;
                 console.log("playerMoney", playerMoney);
                 break;
             }
@@ -44,6 +45,8 @@ var fight = function(enemyName){
         // break out when opponent dies    
         if (enemyHealth <= 0){
             window.alert(enemyName + " has died!");
+            // awards money for winning
+            playerMoney += 20;
             break;
         }
         else{
@@ -64,9 +67,20 @@ var fight = function(enemyName){
     }
 };
 
-// runs function in a for loop to fight all enemies and resets hp
+// takes array element and loops through each robot
 for(var i = 0; i < enemyNames.length; i++){
+    // checks if playerHealth is above 0 and displays a round counter. Remember that indexing starts at 0 so you must add a number
+    if (playerHealth > 0){
+        window.alert("Welcome to Robot Gladiators! Round " + (i+1));
+    }
+    // lets player know if they've lost
+    else{
+        window.alert("You have lost your robot in battle! Game Over!");
+        break;
+    }
+    // assings variable to indexed enemy and pipes for loop variable
     var pickedEnemyName = enemyNames[i];
-    enemyHealth =50;
+    // resets health pool
+    enemyHealth = 50;
     fight(pickedEnemyName);
 }
