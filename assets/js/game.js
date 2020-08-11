@@ -67,20 +67,54 @@ var fight = function(enemyName){
     }
 };
 
-// takes array element and loops through each robot
-for(var i = 0; i < enemyNames.length; i++){
-    // checks if playerHealth is above 0 and displays a round counter. Remember that indexing starts at 0 so you must add a number
+
+// start game function
+var startGame = function(){
+
+    playerHealth = 100;
+    playerAttack = 10;
+    playerMoney = 10;
+
+    for(var i = 0; i < enemyNames.length; i++){
+        // checks if playerHealth is above 0 and displays a round counter. Remember that indexing starts at 0 so you must add a number
+        if (playerHealth > 0){
+            window.alert("Welcome to Robot Gladiators! Round " + (i+1));
+        }
+        // lets player know if they've lost
+        else{
+            window.alert("You have lost your robot in battle! Game Over!");
+            break;
+        }
+        // assings variable to indexed enemy and pipes for loop variable
+        var pickedEnemyName = enemyNames[i];
+        // resets health pool
+        enemyHealth = 50;
+        fight(pickedEnemyName);
+    }
+    endGame();
+};
+
+// end game function
+var endGame = function(){
+
+    // congratulates if still alive
     if (playerHealth > 0){
-        window.alert("Welcome to Robot Gladiators! Round " + (i+1));
+        window.alert("Great job, you've survived the game! You now have a score")
     }
-    // lets player know if they've lost
     else{
-        window.alert("You have lost your robot in battle! Game Over!");
-        break;
+        window.alert("You've lost your robot in battle.");
     }
-    // assings variable to indexed enemy and pipes for loop variable
-    var pickedEnemyName = enemyNames[i];
-    // resets health pool
-    enemyHealth = 50;
-    fight(pickedEnemyName);
-}
+
+    // asks if they want to play again
+    var playAgainConfirm = window.confirm("Would you like to play again?");
+
+    if (playAgainConfirm){
+        startGame();
+    }
+    else{
+        window.alert("Thank you for playing Robot Gladiators! Come back soon!");
+    }
+};
+
+
+startGame();
