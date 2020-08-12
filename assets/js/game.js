@@ -18,8 +18,19 @@ var playerAttack = 10;
 var playerMoney = 10;
 
 var enemyNames = ["Roborto", "Amy Android", "Robo Trubmle"];
-var enemyHealth = 50;
+
+// Math.random returns value between 0 and 1 but never 1
+    // *Math.random * 21 gives a random number between 0 and 20.xx
+    // * Math.floor rounds the number down so it will be between 0 and 20
+    // * add 40 so the number is always at least 40
+var enemyHealth = Math.floor(Math.random() * 21) + 40;
 var enemyAttack = 12;
+
+// adds a variable to give random number between two values
+var randomNumber = function(min, max){
+    var value = Math.floor(Math.random() * (max - min + 1) + min);
+    return value;
+}
 
 
 // main code block 
@@ -35,12 +46,15 @@ var fight = function(enemyName){
             if (confirmSkip){
                 window.alert(playerName + " has decided to skip this fight. Goodbye!");
                 // subtracts money for being a coward
-                playerMoney -= 10;
+                playerMoney = Math.max(0, playerMoney - 10);
                 console.log("playerMoney", playerMoney);
                 break;
             }
         }    
-        enemyHealth = enemyHealth - playerAttack;
+        // adds a randomness element to playerAttack || Math.max prevents overkills
+        var damage = randomNumber(playerAttack -3, playerAttack);
+        enemyHealth = Math.max(0, enemyHealth - damage)
+
         console.log(playerName + " attacked " + enemyName + ". " + enemyName + " now has " + enemyHealth + " health remaining.");
         // break out when opponent dies    
         if (enemyHealth <= 0){
@@ -52,13 +66,14 @@ var fight = function(enemyName){
         else{
             window.alert(enemyName + " still has " + enemyHealth + " health left.");
         }
+        // enemy turn. adds randomness element to enemyAttack || Math.max prevents overkills
+        var damage = randomNumber(enemyAttack -3, enemyAttack)
+        playerHealth = Math.max(0, playerHealth - damage);
 
-        // enemy turn
-        playerHealth = playerHealth - enemyAttack;
         console.log(enemyName + " attacked " + playerName + ". " + playerName + " now has " + playerHealth + " health remaining.");
         // breakout of while loop when player dies
         if (playerHealth <= 0){
-            windows.alert(playerName + " has died!");
+            window.alert(playerName + " has died!");
             break;
         }
         else{
@@ -76,7 +91,6 @@ var startGame = function(){
     playerMoney = 10;
 
     for(var i = 0; i < enemyNames.length; i++){
-        debugger;
         // checks if playerHealth is above 0 and displays a round counter. Remember that indexing starts at 0 so you must add a number
         if (playerHealth > 0){
             window.alert("Welcome to Robot Gladiators! Round " + (i+1));
@@ -89,7 +103,7 @@ var startGame = function(){
         // assings variable to indexed enemy and pipes for loop variable
         var pickedEnemyName = enemyNames[i];
         // resets health pool
-        enemyHealth = 50;
+        enemyHealth = randomNumber(40, 60);
         fight(pickedEnemyName);
 
         if (playerHealth >0 && i < enemyNames.length -1){
@@ -123,9 +137,9 @@ var endGame = function(){
 
 var shop = function(){
     // ask player what to do
-    var shopOptionPrompt(){
+    var shopOptionPrompt = window.prompt(
         "Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one: 'REFILL', 'UPGRADE', or 'LEAVE' to make a choice."
-    }
+    )
 
     switch(shopOptionPrompt){
         case "REFILL":
